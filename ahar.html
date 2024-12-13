@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وبسایت ساده</title>
+  <style>
+    body {
+      background-color: #333333; /* پس‌زمینه رنگ مشکی روشن */
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #text {
+      font-size: 2em;
+      opacity: 1;
+      transition: opacity 1s ease-out;
+    }
+
+    #passwordSection {
+      display: none;
+      margin-top: 20px;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+
+    input[type="checkbox"] {
+      margin-top: 10px;
+    }
+
+    #strengthMessage {
+      margin-top: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="text">علی الله وردی زاده</div>
+
+  <div id="passwordSection">
+    <h2>لطفا رمز عبور خود را وارد کنید:</h2>
+    <input type="password" id="password" placeholder="رمز عبور خود را وارد کنید" oninput="checkPasswordStrength()">
+    <div>
+      <label>
+        <input type="checkbox" id="showPassword" onclick="togglePassword()"> نمایش رمز عبور
+      </label>
+    </div>
+    <div id="strengthMessage"></div>
+  </div>
+
+  <script>
+    // بعد از 5 ثانیه، متن "علی الله وردی زاده" ناپدید می‌شود و فرم وارد کردن رمز عبور نمایش داده می‌شود
+    setTimeout(function() {
+      document.getElementById('text').style.opacity = 0;
+      document.getElementById('passwordSection').style.display = 'block';
+    }, 5000);
+
+    // بررسی قدرت رمز عبور
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const strengthMessage = document.getElementById('strengthMessage');
+      const regexWeak = /^(?=.*[a-zA-Z]).{6,}$/; // حداقل 6 کاراکتر (حروف)
+      const regexMedium = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/; // حداقل 8 کاراکتر با عدد
+      const regexStrong = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{10,}$/; // حداقل 10 کاراکتر با عدد و نماد
+
+      if (regexStrong.test(password)) {
+        strengthMessage.textContent = "رمز عبور قوی است";
+        strengthMessage.style.color = "green";
+      } else if (regexMedium.test(password)) {
+        strengthMessage.textContent = "رمز عبور متوسط است";
+        strengthMessage.style.color = "orange";
+      } else if (regexWeak.test(password)) {
+        strengthMessage.textContent = "رمز عبور ضعیف است";
+        strengthMessage.style.color = "red";
+      } else {
+        strengthMessage.textContent = "";
+      }
+    }
+
+    // تغییر نوع ورودی رمز عبور به "متن" یا "رمز عبور" در صورت چک کردن یا برداشتن تیک
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const showPasswordCheckbox = document.getElementById('showPassword');
+      
+      if (showPasswordCheckbox.checked) {
+        passwordField.type = "text"; // نمایش رمز عبور
+      } else {
+        passwordField.type = "password"; // مخفی کردن رمز عبور
+      }
+    }
+  </script>
+</body>
+</html>
